@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trần Hoàng Anh Khôi - Backend Laravel Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+        }
+        
+        .header {
+            grid-column: 1 / -1;
+            padding: 30px;
+            padding-bottom: 10px;
+            border-bottom: none;
+        }
+        
+        .name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        
+        .title {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 0;
+            text-transform: uppercase;
+        }
+        
+        .divider {
+            height: 2px;
+            background: #2c3e50;
+            margin: 5px 0 5px 0;
+            width: 100%;
+        }
+        
+        .left-column {
+            background: #f8f9fa;
+            padding: 30px;
+            border-right: 1px solid #ddd;
+        }
+        
+        .right-column {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .icon-circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 25px;
+            height: 25px;
+            margin-right: 10px;
+            border-radius: 50%;
+            background-color: #2c3e50;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .section-title {
+            color: #2c3e50;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            position: relative;
+        }
+        
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #ddd;
+        }
+        
+        .contact-item {
+            display: flex;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .contact-icon {
+            margin-right: 10px;
+            min-width: 15px;
+        }
+        
+        .skill-category {
+            margin-bottom: 15px;
+        }
+        
+        .skill-category h4 {
+            color: #2c3e50;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .skill-item {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 15px;
+            font-size: 14px;
+        }
+        
+        .skill-item:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #2c3e50;
+        }
+        
+        .language-item {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 15px;
+            font-size: 14px;
+        }
+        
+        .language-item:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #2c3e50;
+        }
+        
+        .reference-item {
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .reference-name {
+            font-weight: bold;
+        }
+        
+        .profile-text {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #444;
+        }
+        
+        .experience-item {
+            margin-bottom: 25px;
+        }
+        
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .experience-title {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+        
+        .experience-company {
+            font-weight: bold;
+            color: #3498db;
+            font-size: 12px;
+        }
+        
+        .experience-date {
+            max-height: 24px;
+            color: #555;
+            font-size: 14px;
+            background: #f5f5f5;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .experience-details {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .experience-details li {
+            margin-bottom: 5px;
+            position: relative;
+            padding-left: 15px;
+            list-style-type: none;
+            color: #444;
+        }
+        
+        .experience-details li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #3498db;
+        }
+        
+        .education-item {
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .education-degree {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .education-school {
+            margin-top: 5px;
+            color: #444;
+        }
+        
+        .education-date {
+            max-height: 24px;
+            color: #555;
+            font-size: 14px;
+            float: right;
+            background: #f5f5f5;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .left-column {
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+            }
+        }
+        
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 5px;
+        }
+        
+        .tech-tag {
+            background: #e8f4f8;
+            color: #2c3e50;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid #bdc3c7;
+        }
+        
+        .highlight {
+            font-weight: 600;
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="name">TRẦN HOÀNG ANH KHÔI</div>
+            <div class="title">BACKEND LARAVEL DEVELOPER</div>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="left-column">
+            <div class="section">
+                <div class="section-header">
+                    <div class="icon-circle">📞</div>
+                    <div class="section-title">LIÊN HỆ</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📱</div>
+                    <div>+84 707 349 054</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <div>hoangkhoi230@gmail.com</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>Quận Tân Phú, TP. Hồ Chí Minh</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">💻</div>
+                    <div>github.com/KtranH</div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="icon-circle">🔧</div>
+                    <div class="section-title">KỸ NĂNG CÔNG NGHỆ</div>
+                </div>
+                
+                <div class="skill-category">
+                    <h4>Ngôn ngữ lập trình</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag">PHP 8.2</span>
+                        <span class="tech-tag">C#</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h4>Backend Framework</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Laravel 11</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h4>Database</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag">MySQL</span>
+                        <span class="tech-tag">SQL Server</span>
+                        <span class="tech-tag">Eloquent ORM</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h4>Frontend</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Vue.js 3</span>
+                        <span class="tech-tag">Composition API</span>
+                        <span class="tech-tag">Pinia</span>
+                        <span class="tech-tag">Tailwind CSS</span>
+                        <span class="tech-tag">PrimeVue</span>
+                        <span class="tech-tag">Blade Templates</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h4>Realtime & Queue</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Laravel Queue</span>
+                        <span class="tech-tag">Laravel Jobs</span>
+                        <span class="tech-tag">WebSockets</span>
+                        <span class="tech-tag">Laravel Echo</span>
+                        <span class="tech-tag">Pusher</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h4>AI/ML & Desktop</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag">LM Studio</span>
+                        <span class="tech-tag">ComfyUI API</span>
+                        <span class="tech-tag">Gradio</span>
+                        <span class="tech-tag">C# WinForm</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category">
+                    <h4>DevOps & Cloud</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag">R2 Cloud Storage</span>
+                        <span class="tech-tag">Git</span>
+                        <span class="tech-tag">GitHub</span>
+                        <span class="tech-tag">Postman</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="icon-circle">🎓</div>
+                    <div class="section-title">HỌC VẤN</div>
+                </div>
+                <div class="education-item">
+                    <div class="education-header" style="display: flex; justify-content: space-between;">
+                        <div>
+                            <div class="education-degree">Cử Nhân Công Nghệ Thông Tin</div>
+                            <div class="education-school">Đại học Công Thương TP.HCM (HUIT)</div>
+                        </div>
+                        <div class="education-date">05/2025</div>
+                    </div>
+                    <div>GPA: 3.69/4.0</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-column">
+            <div class="section">
+                <div class="section-header">
+                    <div class="icon-circle">👤</div>
+                    <div class="section-title">MỤC TIÊU NGHỀ NGHIỆP</div>
+                </div>
+                <div class="profile-text">
+                    Tôi mong muốn được học hỏi và tích lũy kinh nghiệm tại vị trí <strong>Backend Laravel Developer Intern/Fresher</strong>. Với tinh thần cầu tiến và sẵn sàng làm việc toàn thời gian, tôi hy vọng có thể phát triển vững vàng chuyên môn trong 5 năm tới và từng bước hướng tới vai trò <strong>Fullstack Developer</strong>.
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="icon-circle">💼</div>
+                    <div class="section-title">DỰ ÁN CÁ NHÂN</div>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <div class="experience-title">🎨 Website Tạo Ảnh AI</div>
+                            <div class="experience-company">https://github.com/KtranH/KT_AI.git</div>
+                        </div>
+                        <div class="experience-date">03/2025 - Hiện tại</div>
+                    </div>
+                    <ul class="experience-details">
+                        <li>Phát triển ứng dụng web tạo ảnh AI chất lượng cao với tích hợp <strong>ComfyUI</strong></li>
+                        <li>Tối ưu hiệu suất: <span class="highlight">Giảm thời gian tạo ảnh bằng Model Lighting</span></li>
+                        <li>Xây dựng hệ thống xử lý bất đồng bộ với <strong>Laravel Queue & Jobs</strong></li>
+                        <li>Triển khai giao tiếp realtime qua <strong>WebSockets & Laravel Echo</strong></li>
+                        <li>Phát triển nhiều tính năng tạo ảnh như <span class="highlight">Tạo người mẫu ảo, Thử và Thay quần áo...</span></li>
+                    </ul>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Laravel 11</span>
+                        <span class="tech-tag">Vue.js 3</span>
+                        <span class="tech-tag">WebSockets</span>
+                        <span class="tech-tag">MySQL</span>
+                        <span class="tech-tag">ComfyUI API</span>
+                        <span class="tech-tag">AWS S3</span>
+                    </div>
+                </div>
+                
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <div class="experience-title">🏨 Phần mềm Quản Lý Khách Sạn Đa Nền Tảng</div>
+                            <div class="experience-company">https://github.com/KtranH/PMTT_QLKS.git</div>
+                        </div>
+                        <div class="experience-date">01/2025 - Hiện tại</div>
+                    </div>
+                    <ul class="experience-details">
+                        <li>Phát triển <strong>hệ thống đa nền tảng</strong>: Website Laravel + Desktop C# WinForm</li>
+                        <li>Tích hợp <span class="highlight">AI Chatbot với LLama 3.1</span> hỗ trợ khách hàng 24/7</li>
+                        <li>Xây dựng tính năng <strong>tạo avatar tự động bằng AI</strong></li>
+                        <li>Triển khai <span class="highlight">giảm 30% thời gian xử lý</span> đặt phòng</li>
+                        <li>Phát triển hệ thống giỏ hàng cho phép <strong>đặt nhiều phòng cùng lúc</strong></li>
+                    </ul>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Laravel 11</span>
+                        <span class="tech-tag">C# WinForm</span>
+                        <span class="tech-tag">Blade Templates</span>
+                        <span class="tech-tag">LM Studio</span>
+                        <span class="tech-tag">SQL Server</span>
+                        <span class="tech-tag">AWS S3</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="icon-circle">💻</div>
+                    <div class="section-title">KINH NGHIỆM LÀM VIỆC</div>
+                </div>
+                
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <div class="experience-title">🎤 Machine Learning Intern</div>
+                            <div class="experience-company">TEL4VN - Công ty TNHH Giải pháp Viễn thông</div>
+                        </div>
+                        <div class="experience-date">09/2024 - 01/2025</div>
+                    </div>
+                    <ul class="experience-details">
+                        <li>Kiểm tra và tinh chỉnh <strong>Model nhận diện âm thanh</strong> với độ chính xác cao</li>
+                        <li>Phát triển chức năng <span class="highlight">nhận diện Voice Mail tự động</span></li>
+                        <li>Làm sạch Dataset chuẩn bị cho bước huấn luyện</li>
+                    </ul>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Machine Learning</span>
+                        <span class="tech-tag">Audio Processing</span>
+                        <span class="tech-tag">TensorFlow/PyTorch</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="icon-circle">⭐</div>
+                    <div class="section-title">ĐIỂM MẠNH CÔNG NGHỆ</div>
+                </div>
+                <ul class="experience-details">
+                    <li><strong>Phát triển theo hướng full-stack:</strong> Laravel + Vue 3 RESTful API, SPA với Composition API</li>
+                    <li><strong>Tích hợp AI vào sản phẩm:</strong> LM Studio, ComfyUI, Gradio</li>
+                    <li><strong>Sử dụng AI trong IDE:</strong> VS, VS code với Windsurt AI Assistant, Cursor AI</li>
+                    <li><strong>Lưu trữ đám mây an toàn:</strong> AWS S3, R2 Cloud Storage</li>
+                    <li><strong>Thiết kế hệ thống realtime:</strong> WebSockets, Echo, Queue, Events</li>
+                    <li><strong>Thiết kế đa nền tảng:</strong> Web (Laravel/Vue), Desktop (C# WinForm).</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
