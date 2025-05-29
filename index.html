@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trần Hoàng Anh Khôi - Backend Laravel Developer</title>
+    <meta name="description" content="Trần Hoàng Anh Khôi - Backend Laravel Developer">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/7141/7141724.png">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .project-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill-tag {
+            transition: all 0.3s ease;
+        }
+        
+        .skill-tag:hover {
+            transform: scale(1.05);
+        }
+
+        /* Swiper styles */
+        .swiper {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .swiper-slide {
+            position: relative;
+            background-position: center;
+            background-size: cover;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        
+        .swiper-pagination-bullet {
+            background-color: #000;
+            opacity: 0.5;
+        }
+        
+        .swiper-pagination-bullet-active {
+            background-color: #1d3fff;
+            opacity: 1;
+        }
+        
+        .slide-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            color: white;
+            padding: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .swiper-slide:hover .slide-caption {
+            opacity: 1;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: white !important;
+            --swiper-navigation-size: 25px;
+            background-color: rgba(0, 0, 0, 0.5);
+            width: 35px !important;
+            height: 35px !important;
+            border-radius: 50%;
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 16px !important;
+        }
+        
+        /* Lightbox styles */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .lightbox-img {
+            display: block;
+            max-width: 100%;
+            max-height: 90vh;
+            margin: 0 auto;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.25);
+        }
+        
+        .lightbox-caption {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            right: 0;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 10000;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+        }
+        
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 10000;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+        
+        .lightbox-nav:hover {
+            background-color: rgba(29, 63, 255, 0.8);
+        }
+        
+        .lightbox-prev {
+            left: 20px;
+        }
+        
+        .lightbox-next {
+            right: 20px;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-gray-800">
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-blue-900 to-indigo-800 text-white py-16" data-aos="fade-down" data-aos-duration="800">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="mb-8 md:mb-0 text-center md:text-left" data-aos="fade-right" data-aos-delay="200">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-2">Trần Hoàng Anh Khôi</h1>
+                    <h2 class="text-xl md:text-2xl text-blue-200">Backend Laravel Developer</h2>
+                    <div class="mt-6 flex flex-wrap gap-3 justify-center md:justify-start">
+                        <a href="tel:0707349054" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full transition">
+                            <i class="fas fa-phone"></i> 0707349054
+                        </a>
+                        <a href="mailto:hoangkhoi230@gmail.com" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full transition">
+                            <i class="fas fa-envelope"></i> hoangkhoi230@gmail.com
+                        </a>
+                        <a href="https://github.com/KtranH" target="_blank" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full transition">
+                            <i class="fab fa-github"></i> github.com/KtranH
+                        </a>
+                        <span class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full">
+                            <i class="fas fa-map-marker-alt"></i> Quận Tân Phú, TPHCM
+                        </span>
+                    </div>
+                </div>
+                <div class="w-40 h-40 md:w-52 md:h-52 rounded-full bg-white/20 flex items-center justify-center text-5xl font-bold border-4 border-white" data-aos="zoom-in" data-aos-delay="400">
+                    <img src="https://pub-0ec2d0f968bd484492ed9495327a3698.r2.dev/Image_CV/3167d265-494a-43cf-9a84-f1baf077e117.jpg" alt="" class="w-full h-full object-cover rounded-full">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section class="py-16 bg-white" id="about" data-aos="fade-up" data-aos-duration="800">
+        <div class="container mx-auto px-4 md:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12 text-indigo-800" data-aos="fade-up">Giới Thiệu</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div data-aos="fade-right" data-aos-delay="200">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-bullseye text-indigo-600 mr-3"></i>
+                        Mục Tiêu Nghề Nghiệp
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-500" data-aos="fade-up" data-aos-delay="300">
+                            <h4 class="font-bold text-indigo-700">Ngắn hạn:</h4>
+                            <p>Tích lũy kinh nghiệm Backend Laravel, đóng góp vào dự án thực tế với tinh thần cầu tiến.</p>
+                        </div>
+                        <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-500" data-aos="fade-up" data-aos-delay="400">
+                            <h4 class="font-bold text-indigo-700">Dài hạn:</h4>
+                            <p>Phát triển chuyên môn thành Senior Developer trong 6 năm tới. Sẵn sàng làm việc toàn thời gian, ưu tiên công việc hàng đầu.</p>
+                        </div>
+                    </div>
+                </div>
+                <div data-aos="fade-left" data-aos-delay="200">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-user-graduate text-indigo-600 mr-3"></i>
+                        Học Vấn
+                    </h3>
+                    <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-500" data-aos="fade-up" data-aos-delay="300">
+                        <div class="flex justify-between gap-4">
+                            <div>
+                                <h4 class="font-bold text-indigo-700">Trường Đại học Công Thương TP.Hồ Chí Minh</h4>
+                                <p class="text-sm text-gray-600 mb-2">Đã tốt nghiệp vào 05/2025</p>
+                                <p>Cử Nhân Công Nghệ Phần Mềm | GPA: 3.69</p>
+                            </div>
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSose72-aQGXuebKetKNaHXl1uVkxLS0N8lRA&s" alt="icon huit" class="w-20 h-20 rounded-full">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="py-16 bg-gray-50" id="skills" data-aos="fade-up" data-aos-duration="800">
+        <div class="container mx-auto px-4 md:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12 text-indigo-800" data-aos="fade-up">Kỹ Năng</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Programming Languages -->
+                <div class="bg-white p-6 rounded-xl shadow-md h-full" data-aos="zoom-in" data-aos-delay="100">
+                    <h3 class="text-xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-code text-indigo-600 mr-3"></i>
+                        Ngôn Ngữ Lập Trình
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <i class="fab fa-php text-indigo-500 text-xl w-8"></i>
+                            <span>PHP</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-js text-indigo-500 text-xl w-8"></i>
+                            <span>JavaScript</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-microsoft text-indigo-500 text-xl w-8"></i>
+                            <span>C#</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Backend Skills -->
+                <div class="bg-white p-6 rounded-xl shadow-md h-full" data-aos="zoom-in" data-aos-delay="200">
+                    <h3 class="text-xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-server text-indigo-600 mr-3"></i>
+                        Công Nghệ Backend
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <i class="fab fa-laravel text-indigo-500 text-xl w-8"></i>
+                            <span>Laravel</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-tasks text-indigo-500 text-xl w-8"></i>
+                            <span>Laravel Queue & Job</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-shield-alt text-indigo-500 text-xl w-8"></i>
+                            <span>Laravel Sanctum</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-user-lock text-indigo-500 text-xl w-8"></i>
+                            <span>Laravel Authentication</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-broadcast-tower text-indigo-500 text-xl w-8"></i>
+                            <span>Laravel WebSockets/Pusher</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-share-alt text-indigo-500 text-xl w-8"></i>
+                            <span>Laravel Socialite</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-microsoft text-indigo-500 text-xl w-8"></i>
+                            <span>.NET Framework</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-database text-indigo-500 text-xl w-8"></i>
+                            <span>Entity Framework</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Frontend Skills -->
+                <div class="bg-white p-6 rounded-xl shadow-md h-full" data-aos="zoom-in" data-aos-delay="300">
+                    <h3 class="text-xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-desktop text-indigo-600 mr-3"></i>
+                        Công Nghệ Frontend
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <i class="fab fa-vuejs text-indigo-500 text-xl w-8"></i>
+                            <span>Vue.js</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-css3-alt text-indigo-500 text-xl w-8"></i>
+                            <span>TailwindCSS</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-js text-indigo-500 text-xl w-8"></i>
+                            <span>jQuery</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-js-square text-indigo-500 text-xl w-8"></i>
+                            <span>JavaScript ES6+</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-file-code text-indigo-500 text-xl w-8"></i>
+                            <span>Blade templates</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Database & Cloud -->
+                <div class="bg-white p-6 rounded-xl shadow-md h-full" data-aos="zoom-in" data-aos-delay="400">
+                    <h3 class="text-xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-database text-indigo-600 mr-3"></i>
+                        Database & Cloud
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <i class="fas fa-database text-indigo-500 text-xl w-8"></i>
+                            <span>MySQL</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-server text-indigo-500 text-xl w-8"></i>
+                            <span>SQL Server</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-aws text-indigo-500 text-xl w-8"></i>
+                            <span>AWS S3</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-cloud text-indigo-500 text-xl w-8"></i>
+                            <span>R2 Storage</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-memory text-indigo-500 text-xl w-8"></i>
+                            <span>Redis</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Tools & IDE -->
+                <div class="bg-white p-6 rounded-xl shadow-md h-full" data-aos="zoom-in" data-aos-delay="500">
+                    <h3 class="text-xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-tools text-indigo-600 mr-3"></i>
+                        Tools & IDE
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <i class="fab fa-github text-indigo-500 text-xl w-8"></i>
+                            <span>Git/GitHub</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-code text-indigo-500 text-xl w-8"></i>
+                            <span>Visual Studio</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-code text-indigo-500 text-xl w-8"></i>
+                            <span>Visual Studio Code</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-paper-plane text-indigo-500 text-xl w-8"></i>
+                            <span>Postman</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- AI Integration -->
+                <div class="bg-white p-6 rounded-xl shadow-md h-full" data-aos="zoom-in" data-aos-delay="600">
+                    <h3 class="text-xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-robot text-indigo-600 mr-3"></i>
+                        Ứng Dụng AI
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <i class="fas fa-brain text-indigo-500 text-xl w-8"></i>
+                            <span>AI coding assistant</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-wind text-indigo-500 text-xl w-8"></i>
+                            <span>Windjust vào IDE</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-mouse-pointer text-indigo-500 text-xl w-8"></i>
+                            <span>Cursor AI</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa-solid fa-laptop-code text-indigo-500 text-xl w-8"></i>
+                            <span>Trae AI</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-sliders-h text-indigo-500 text-xl w-8"></i>
+                            <span>ComfyUI</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-terminal text-indigo-500 text-xl w-8"></i>
+                            <span>LM-Studio</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="py-16" id="projects" data-aos="fade-up" data-aos-duration="800">
+        <div class="container mx-auto px-4 md:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12 text-indigo-800" data-aos="fade-up">Dự Án</h2>
+            
+            <!-- Project 1 -->
+            <div class="mb-16 bg-white rounded-xl shadow-lg overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                <div class="p-6 border-b">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+                        <h3 class="text-2xl font-bold text-indigo-800">Website chia sẻ và sáng tạo ảnh AI</h3>
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Đang phát triển</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">03/2025 - Hiện tại</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">Laravel 11</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">Vue 3</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">TailwindCSS</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">ComfyUI</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">Laravel Sanctum</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">Laravel Queue & Job</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">Laravel Socialite</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">Redis</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">R2 Storage</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">WebSockets</span>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        Phát triển website tạo ảnh AI, ứng dụng công nghệ AI hiện đại cho việc chia sẻ và sáng tạo ảnh với giao diện người dùng thân thiện, kết hợp công nghệ backend và frontend mạnh mẽ.
+                    </p>
+                    <a href="https://github.com/KtranH/KT_AI.git" target="_blank" class="text-indigo-600 hover:text-indigo-800 transition flex items-center gap-2">
+                        <i class="fab fa-github"></i> github.com/KtranH/KT_AI.git
+                    </a>
+                </div>
+                
+                <div class="p-6 bg-gray-50">
+                    <h4 class="text-lg font-bold mb-4 text-indigo-700">Tính năng chính</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div data-aos="fade-right" data-aos-delay="300">
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>Phát triển website tạo ảnh AI với Laravel 11 backend và Vue3 frontend</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>Tích hợp ComfyUI cho xử lý ảnh AI chất lượng cao</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>Triển khai hệ thống bảo mật với Laravel Sanctum</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>Quản lý lưu trữ đám mây với R2 Storage và gửi cache với Redis</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div data-aos="fade-left" data-aos-delay="300">
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>Thiết kế và triển khai RESTful API với Repository Pattern</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>Sử dụng Laravel Queue Worker để xử lý các nhiệm vụ tính toán bổ sung</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>WebSockets cho tính năng realtime thông báo và cập nhật</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>Triển khai công nghệ AI tạo ảnh (IPAdapter, HyperLora, ACE++) để làm chức năng như tạo người mẫu ảo, thử quần áo và sao chép khuôn mặt</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Replace the existing grid with Swiper slider -->
+                <div class="swiper project-swiper h-80 rounded-b-xl overflow-hidden" data-aos="fade-up" data-aos-delay="400">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide p-2 border-2 border-indigo-500 rounded-lg">
+                            <img src="https://scontent.fsgn5-15.fna.fbcdn.net/v/t39.30808-6/500201218_713133817767961_223294507456341947_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEjnnQWZ5Mq-mzWG4OjGs3aYN2m2eASu3Jg3abZ4BK7crYWgi6zXPlJIq63E43c9EAIJagpEEsouxJXwduJgyk8&_nc_ohc=hJfBA-wb9dwQ7kNvwEe2VZ5&_nc_oc=AdkSSSVt1kFUoSStSNSwMBuYqqhsyd8IK2edb7yocxf464CJy5ZlGjISnYQeAXZbFrJR1e2QvBsctn0bTCMvlCY1&_nc_zt=23&_nc_ht=scontent.fsgn5-15.fna&_nc_gid=W6lQJhMRXcsSKFOuK2OhDw&oh=00_AfIPWGOLRWJTttrs5g99Ja6SBGyfv_k7cDbZZVWEOSgcyg&oe=683DE853" alt="Quản lý tiến trình tạo ảnh">
+                            <div class="slide-caption">
+                                <p>Giao diện xử lý bất đồng bộ yêu cầu tạo ảnh</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide p-2 border-2 border-indigo-500 rounded-lg">
+                            <img src="https://scontent.fsgn5-8.fna.fbcdn.net/v/t39.30808-6/499967487_713133841101292_477631550619519945_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGg8Cq7hdSVC9gb9sgMgSGe_ErCmGUn2Cb8SsKYZSfYJnxn6Ce18qDVpypclj-9b682c5RCxeH_sT6lkraOvGLY&_nc_ohc=nN-R1xRPMvMQ7kNvwF99faP&_nc_oc=AdkWTZLdaRUfD_IyKLTrG2QJr8n4Z-8UD7zjbBP0-lJ70HsI96Qv2zvJ5H9dJqoB91VvH-33X6cGiji06F3ed8Tw&_nc_zt=23&_nc_ht=scontent.fsgn5-8.fna&_nc_gid=o5Pf-1tHeRqgH3zuNq6P4w&oh=00_AfJ_-btKFojJ3CPGRBp5nc0KpzV8bJJ9uEDANYovUxmyaA&oe=683DD1A2" alt="Giao  diện quản lý tải nhiều hình ảnh">
+                            <div class="slide-caption">
+                                <p>Giao diện quản lý tải nhiều hình ảnh</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide p-2 border-2 border-indigo-500 rounded-lg">
+                            <img src="https://scontent.fsgn5-3.fna.fbcdn.net/v/t39.30808-6/499921723_713133517767991_8735616934866260113_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeF5loPpXOgVQuGrhX2FYFD5jVtYNCuHSP-NW1g0K4dI__oDOWJ5p68MwDPLvxktRRkHXYtwqB1SxWNaBAEhdvQL&_nc_ohc=dvfWWmo-MXkQ7kNvwE-A4Lg&_nc_oc=AdnyRU5wd8hTnEuHzGkVNMw0uz1pG6phkayNp4eOrWYoFnCgZstJsOJEILdH3O2X8661Js-Ip7EaIqf8bDBsPlbN&_nc_zt=23&_nc_ht=scontent.fsgn5-3.fna&_nc_gid=vXKpvztdHuy6MMyZ1xf7vw&oh=00_AfLGRX5Cg229B2PQxzJJ9ShsO5OR6jBmi81Rcov9CMggKg&oe=683DDD18" alt="Chức năng tạo sao chép khuôn mặt và thay quần áo">
+                            <div class="slide-caption">
+                                <p>Chức năng sao chép mặt và thử quần áo</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide p-2 border-2 border-indigo-500 rounded-lg">
+                            <img src="https://scontent.fsgn5-14.fna.fbcdn.net/v/t39.30808-6/500660732_713133661101310_312358734598843290_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeHlBmanryUdKWOg6Cvcf6HXGAuR1cFZjoEYC5HVwVmOgbWZuJqmFNLmtTXEw4ikvJ3E_6vfpleIHV0TA7JAryDL&_nc_ohc=ruXNa3qs5VIQ7kNvwEhv6j2&_nc_oc=AdlDJDwnsJCJsm9jncmYwbdTQchnvKGN8RBTwWAXahYxRphWXVlvZHN8oDLWAvmQ4eIEGbUhJu7dtNeEzRzXsM8W&_nc_zt=23&_nc_ht=scontent.fsgn5-14.fna&_nc_gid=JD3_s2E-t5kPMOzEFICZ_w&oh=00_AfLHBKFz_V5cpcOoswMsPsdKivz_ZxpwsqsY-Qpxw_MBCw&oe=683DEF81" alt="Chức năng thử/thay quần áo">
+                            <div class="slide-caption">
+                                <p>Chức năng thử/thay quần áo</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide p-2 border-2 border-indigo-500 rounded-lg">
+                            <img src="https://scontent.fsgn5-9.fna.fbcdn.net/v/t39.30808-6/500139311_713133791101297_4910110875925901225_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeHJdOqsA4WPcMYv3wXfyBemKsh4JMI5tE4qyHgkwjm0TnKugFErTG0oZe-39kyFNqtCDCqDX8pWIhlIlMG3O1Ue&_nc_ohc=pEnonygheB4Q7kNvwFXli1I&_nc_oc=Adl5KHIYCI915axqtF_shHDHmkPEANhRYbMtSo08P4QVVWBUGyshz95fH5pbznNnQGKMr-OoTg-qeC1i8lragxee&_nc_zt=23&_nc_ht=scontent.fsgn5-9.fna&_nc_gid=Burnc7VG7YLMaJF2pN5_EA&oh=00_AfLFZwEzRKa1Nh4I7jwotXDOxPrYVnn3rzst9gcGIn4j4A&oe=683DF2CD" alt="Giao diện quản lý thông báo">
+                            <div class="slide-caption">
+                                <p>Giao diện quản lý thông báo</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide p-2 border-2 border-indigo-500 rounded-lg">
+                            <img src="https://scontent.fsgn5-10.fna.fbcdn.net/v/t39.30808-6/500130286_713133427768000_4307341529051674178_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeHCCHLhpfdigK1DrpV7PWfSDgDHDFtqG5gOAMcMW2obmFdA37d4p1g9KP9gF5E2qdfQt4wi_oHP8WYidvfqanUA&_nc_ohc=vuR3odfsI90Q7kNvwGpk_R8&_nc_oc=AdlNzauIzEiR-b8ag3obPgds8wzRNKJRfKabxn1nf4qXVYYhVMHy6bpVzgOKGFKRD3-dDvjzU2C6mo01OB-OFkMf&_nc_zt=23&_nc_ht=scontent.fsgn5-10.fna&_nc_gid=pAaAsC-ewi1vvMUzAIl8uA&oh=00_AfLYhuCkwEi2HiOU5uTa7hbU3aeLT9jOgdZbM73LQVd9mw&oe=683DCBF8" alt="Giao diện tương tác cộng đồng">
+                            <div class="slide-caption">
+                                <p>Giao diện tương tác cộng đồng</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide p-2 border-2 border-indigo-500 rounded-lg">
+                            <img src="https://scontent.fsgn5-15.fna.fbcdn.net/v/t39.30808-6/499932214_713133881101288_7601055074360330534_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeE_9HJwiJD1z2O8-YRwppdqpX7EbPgaFOSlfsRs-BoU5ELd27Z9YUwLxOu-gEajlIB7Swt9C9MquoN0Ff8OoH2z&_nc_ohc=ONk9AJ8TcMIQ7kNvwFkbeu1&_nc_oc=Adl-GJ8CsRjv-mmofR0akW4JmSBZMbWwXEEvTKBrLyU1ECjP_uv0sPK6F1C8EnJhH-rr5bmsGpnFtbfphInCeKMf&_nc_zt=23&_nc_ht=scontent.fsgn5-15.fna&_nc_gid=0i8s4WVLWgoK59z0KGwwHQ&oh=00_AfKNIatFRY93-6Zc8GqF1YHrSZrGNq3K6z1qfV4pVD-HWQ&oe=683DDCAE" alt="Thiết kế workflow tạo ảnh">
+                            <div class="slide-caption">
+                                <p>Thiết kế workflow tạo ảnh</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next text-white"></div>
+                    <div class="swiper-button-prev text-white"></div>
+                </div>
+            </div>
+            
+            <!-- Project 2 -->
+            <div class="mb-16 bg-white rounded-xl shadow-lg overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                <div class="p-6 border-b">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+                        <h3 class="text-2xl font-bold text-indigo-800">Hệ thống Quản lý Khách sạn</h3>
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">Hoàn thành</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">01/2025 - 04/2025</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">Laravel 11</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">Laravel Socialite</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">Laravel Authentication</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">.NET Framework</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">SQL Server</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">Entity Framework</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">C# Winform</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">LM-Studio</span>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">RAG</span>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        Hệ thống quản lý khách sạn toàn diện kết hợp web platform và ứng dụng Windows, tích hợp AI để hỗ trợ nhân viên trong việc quản lý và truy vấn dữ liệu.
+                    </p>
+                    <a href="https://github.com/KtranH/PMKITI_QLKS.git" target="_blank" class="text-indigo-600 hover:text-indigo-800 transition flex items-center gap-2">
+                        <i class="fab fa-github"></i> github.com/KtranH/PMKITI_QLKS.git
+                    </a>
+                </div>
+                
+                <div class="p-6 bg-gray-50">
+                    <h4 class="text-lg font-bold mb-4 text-indigo-700">Tính năng chính</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div data-aos="fade-right" data-aos-delay="300">
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>Phát triển hệ thống nền tảng với Laravel web backend và C# Windows app</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>Sử dụng MVC và Repository Pattern cho cấu trúc code rõ ràng, dễ bảo trì</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>Tích hợp Entity Framework để thao tác với SQL Server database</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div data-aos="fade-left" data-aos-delay="300">
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>Phát triển giao diện quản lý nội bộ trên C# Winform, thân thiện với người dùng</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>Tích hợp chatbot AI thông qua LM-Studio hỗ trợ người dùng truy vấn database</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                                    <span>Ứng dụng kỹ thuật RAG (Retrieval Augmented Generation) để truy xuất tài liệu sử dụng</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Replace the existing grid with Swiper slider -->
+                <div class="swiper project-swiper h-80 rounded-b-xl overflow-hidden" data-aos="fade-up" data-aos-delay="400">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide p-2 border-2 border-indigo-500 rounded-lg">
+                            <img src="https://pub-0ec2d0f968bd484492ed9495327a3698.r2.dev/GTX/Screenshot%202025-05-29%20182214.png" alt="Dashboard">
+                            <div class="slide-caption">
+                                <p>Dashboard quản lý khách sạn</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide p-2 border-2 border-indigo-500 rounded-lg">
+                            <img src="https://pub-0ec2d0f968bd484492ed9495327a3698.r2.dev/GTX/Screenshot%202025-05-29%20183111.png" alt="Dashboard">
+                            <div class="slide-caption">
+                                <p>Dashboard quản lý khách sạn</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide p-2 border-2 border-indigo-500 rounded-lg">
+                            <img src="https://pub-0ec2d0f968bd484492ed9495327a3698.r2.dev/GTX/Screenshot%202025-05-29%20183257.png" alt="Winform App">
+                            <div class="slide-caption">
+                                <p>Ứng dụng Winform quản lý nội bộ</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide p-2 border-2 border-indigo-500 rounded-lg">
+                            <img src="https://pub-0ec2d0f968bd484492ed9495327a3698.r2.dev/GTX/5d59445e-5188-4cd6-92a4-8dab8715f721.jpg" alt="AI Chatbot">
+                            <div class="slide-caption">
+                                <p>Giao diện chatbot AI hỗ trợ</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide p-2 border-2 border-indigo-500 rounded-lg">
+                            <img src="https://pub-0ec2d0f968bd484492ed9495327a3698.r2.dev/GTX/Screenshot%202025-05-29%20183040.png" alt="Booking System">
+                            <div class="slide-caption">
+                                <p>Hệ thống đặt phòng trực tuyến</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide p-2 border-2 border-indigo-500 rounded-lg">
+                            <img src="https://pub-0ec2d0f968bd484492ed9495327a3698.r2.dev/GTX/Screenshot%202025-05-29%20182937.png" alt="Reports Dashboard">
+                            <div class="slide-caption">
+                                <p>Giao diện quản lý đặt phòng</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next text-white"></div>
+                    <div class="swiper-button-prev text-white"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-16 bg-indigo-900 text-white" id="contact" data-aos="fade-up" data-aos-duration="800">
+        <div class="container mx-auto px-4 md:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12" data-aos="fade-up">Liên Hệ</h2>
+            <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="flex flex-col gap-6" data-aos="fade-right" data-aos-delay="200">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-indigo-700 p-3 rounded-full">
+                            <i class="fas fa-phone text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Điện thoại</h3>
+                            <p>0707349054</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="bg-indigo-700 p-3 rounded-full">
+                            <i class="fas fa-envelope text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Email</h3>
+                            <p>hoangkhoi230@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="bg-indigo-700 p-3 rounded-full">
+                            <i class="fas fa-map-marker-alt text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Địa chỉ</h3>
+                            <p>Quận Tân Phú, TPHCM</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col gap-4" data-aos="fade-left" data-aos-delay="200">
+                    <a href="https://github.com/KtranH" target="_blank" class="flex items-center gap-4 bg-indigo-800 hover:bg-indigo-700 p-4 rounded-lg transition">
+                        <i class="fab fa-github text-2xl"></i>
+                        <span>github.com/KtranH</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-4 bg-indigo-800 hover:bg-indigo-700 p-4 rounded-lg transition">
+                        <i class="fab fa-linkedin text-2xl"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-gray-900 text-white text-center">
+        <div class="container mx-auto px-4">
+            <p>&copy; 2025 Trần Hoàng Anh Khôi - Backend Developer.</p>
+        </div>
+    </footer>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS
+            AOS.init({
+                duration: 800,
+                easing: 'ease',
+                once: true,
+                offset: 100,
+                delay: 100
+            });
+            
+            // Initialize Swiper
+            const projectSwipers = document.querySelectorAll('.project-swiper');
+            projectSwipers.forEach(function(swiperEl) {
+                new Swiper(swiperEl, {
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                    loop: true,
+                    grabCursor: true,
+                    autoplay: {
+                        delay: 5000,
+                        disableOnInteraction: false,
+                    },
+                    effect: 'slide',
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    breakpoints: {
+                        // khi độ rộng cửa sổ >= 480px
+                        480: {
+                            slidesPerView: 1,
+                            spaceBetween: 10
+                        },
+                        // khi độ rộng cửa sổ >= 640px
+                        640: {
+                            slidesPerView: 2,
+                            spaceBetween: 15
+                        },
+                        // khi độ rộng cửa sổ >= 768px
+                        768: {
+                            slidesPerView: 3,
+                            spaceBetween: 20
+                        }
+                    }
+                });
+            });
+            
+            // Lightbox functionality
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const lightboxClose = document.getElementById('lightbox-close');
+            const lightboxPrev = document.getElementById('lightbox-prev');
+            const lightboxNext = document.getElementById('lightbox-next');
+            
+            let currentProjectSlides = null;
+            let currentIndex = 0;
+            
+            // Add click event to all swiper slides
+            document.querySelectorAll('.swiper-slide').forEach(slide => {
+                slide.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    // Find the parent swiper container
+                    const swiperContainer = this.closest('.swiper');
+                    // Get all slides in this swiper
+                    const slides = Array.from(swiperContainer.querySelectorAll('.swiper-slide:not(.swiper-slide-duplicate)'));
+                    currentProjectSlides = slides;
+                    
+                    // Find the index of clicked slide
+                    currentIndex = slides.indexOf(this);
+                    if (currentIndex === -1) {
+                        // If it's a duplicate slide, find the original
+                        const duplicateIndex = Array.from(swiperContainer.querySelectorAll('.swiper-slide')).indexOf(this);
+                        currentIndex = duplicateIndex % slides.length;
+                    }
+                    
+                    // Get image source and caption
+                    const img = this.querySelector('img');
+                    const captionEl = this.querySelector('.slide-caption p');
+                    
+                    // Set lightbox content
+                    lightboxImg.src = img.src;
+                    lightboxImg.alt = img.alt;
+                    lightboxCaption.textContent = captionEl ? captionEl.textContent : '';
+                    
+                    // Show lightbox
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                });
+            });
+            
+            // Close lightbox
+            lightboxClose.addEventListener('click', () => {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = ''; // Re-enable scrolling
+            });
+            
+            // Click outside to close
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    lightbox.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // Navigate to previous image
+            lightboxPrev.addEventListener('click', () => {
+                if (!currentProjectSlides) return;
+                
+                currentIndex = (currentIndex - 1 + currentProjectSlides.length) % currentProjectSlides.length;
+                const prevSlide = currentProjectSlides[currentIndex];
+                const img = prevSlide.querySelector('img');
+                const captionEl = prevSlide.querySelector('.slide-caption p');
+                
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightboxCaption.textContent = captionEl ? captionEl.textContent : '';
+            });
+            
+            // Navigate to next image
+            lightboxNext.addEventListener('click', () => {
+                if (!currentProjectSlides) return;
+                
+                currentIndex = (currentIndex + 1) % currentProjectSlides.length;
+                const nextSlide = currentProjectSlides[currentIndex];
+                const img = nextSlide.querySelector('img');
+                const captionEl = nextSlide.querySelector('.slide-caption p');
+                
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightboxCaption.textContent = captionEl ? captionEl.textContent : '';
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (!lightbox.classList.contains('active')) return;
+                
+                if (e.key === 'Escape') {
+                    lightbox.classList.remove('active');
+                    document.body.style.overflow = '';
+                } else if (e.key === 'ArrowLeft') {
+                    lightboxPrev.click();
+                } else if (e.key === 'ArrowRight') {
+                    lightboxNext.click();
+                }
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-close" id="lightbox-close">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="lightbox-nav lightbox-prev" id="lightbox-prev">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="lightbox-content">
+            <img id="lightbox-img" class="lightbox-img" src="" alt="Lightbox image">
+            <div id="lightbox-caption" class="lightbox-caption"></div>
+        </div>
+        <div class="lightbox-nav lightbox-next" id="lightbox-next">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+    </div>
+</body>
+</html> 
